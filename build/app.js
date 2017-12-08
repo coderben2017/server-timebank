@@ -13,24 +13,28 @@ var app = express();
 // body-parser for POST (see https://github.com/expressjs/body-parser)
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app
-    .post('/api/login', function (req, res) {
+// login API
+app.post('/api/login', function (req, res) {
     if (req.body['username'] == 'admin' && req.body['password'] == 'admin') {
         res.send(true);
     }
     else {
         res.send(false);
     }
-})
+});
+// plan API
+app
     .get('/api/plans', function (req, res) {
     res.json(plans);
 })
     .get('/api/plan/:id', function (req, res) {
     res.json(plans.find(function (plan) { return plan.id == req.params.id; }));
-})
-    .get('/api/user/:id', function (req, res) {
+});
+// user API
+app.get('/api/user/:id', function (req, res) {
     res.json(users.find(function (user) { return user.id == req.params.id; }));
 });
+// server
 var server = app.listen(3000, 'localhost', function () {
     console.log('Node Server Start on localhost:3000...');
 });
