@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
+import * as connectHistoryApiFallback from 'connect-history-api-fallback';
 
 import { Plan, getPlans } from "./plan";
 import { User, getUser } from "./user";
@@ -14,7 +15,8 @@ const users: User[] = getUser();
 // 服务器
 const app = express();
 
-// app.use('/', express.static(path.join(__dirname, '..', 'client')))
+app.use('/', connectHistoryApiFallback()); // 使用浏览器路由
+app.use('/', express.static(path.join(__dirname, '..', 'client')));
 
 // body-parser for POST (see https://github.com/expressjs/body-parser)
 app.use(bodyParser.urlencoded({extended: false}));

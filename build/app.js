@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+var path = require("path");
 var bodyParser = require("body-parser");
+var connectHistoryApiFallback = require("connect-history-api-fallback");
 var plan_1 = require("./plan");
 var user_1 = require("./user");
 // 数据池
@@ -9,7 +11,8 @@ var plans = plan_1.getPlans();
 var users = user_1.getUser();
 // 服务器
 var app = express();
-// app.use('/', express.static(path.join(__dirname, '..', 'client')))
+app.use('/', connectHistoryApiFallback()); // 使用浏览器路由
+app.use('/', express.static(path.join(__dirname, '..', 'client')));
 // body-parser for POST (see https://github.com/expressjs/body-parser)
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
