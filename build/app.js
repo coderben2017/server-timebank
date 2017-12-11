@@ -41,4 +41,20 @@ app.get('/api/user/:id', function (req, res) {
 var server = app.listen(3000, 'localhost', function () {
     console.log('Node Server Start on localhost:3000...');
 });
+// 数据库
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: '',
+//   database: 'test'
+// });
+//
+// connection.connect();
+//
+// connection.query('SELECT 1 + 1 AS solution', (err, results, fields) => {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log(`the solution is: ${results[0].solution}`);
+// }); 
 //# sourceMappingURL=app.js.map
