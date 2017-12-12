@@ -48,20 +48,20 @@ export function getPlans(): Plan[] {
 
 // 向数据库添加Plan
 export function addPlan(newPlan: Plan, timeStamp: number): boolean {
-  let res: boolean[] = [];
+  let res: boolean = true;
 
   const sql = 'insert into plan (name, timestamp, place, salary, detail) values (?, ?, ?, ?, ?)';
   const sqlParams = [newPlan.name, timeStamp, newPlan.place, newPlan.salary, newPlan.detail];
   connection.query(sql,sqlParams, (err, results) => {
     if (err) {
       console.log(err.message);
+      res = false;
     } else {
-      res.push(true);
       console.log(results);
     }
   });
 
-  return res[0];
+  return res;
 }
 
 // 将前端传来的文本解析为Plan对象

@@ -39,19 +39,19 @@ function getPlans() {
 exports.getPlans = getPlans;
 // 向数据库添加Plan
 function addPlan(newPlan, timeStamp) {
-    var res = [];
+    var res = true;
     var sql = 'insert into plan (name, timestamp, place, salary, detail) values (?, ?, ?, ?, ?)';
     var sqlParams = [newPlan.name, timeStamp, newPlan.place, newPlan.salary, newPlan.detail];
     connection.query(sql, sqlParams, function (err, results) {
         if (err) {
             console.log(err.message);
+            res = false;
         }
         else {
-            res.push(true);
             console.log(results);
         }
     });
-    return res[0];
+    return res;
 }
 exports.addPlan = addPlan;
 // 将前端传来的文本解析为Plan对象

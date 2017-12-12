@@ -34,8 +34,8 @@ connection.connect();
 const app = express();
 
 // 初始化配置
-app.use('/', connectHistoryApiFallback()); // 使用浏览器路由
-app.use('/', express.static(path.join(__dirname, '..', 'client'))); // 引用静态资源
+// app.use('/', connectHistoryApiFallback()); // 使用浏览器路由
+// app.use('/', express.static(path.join(__dirname, '..', 'client'))); // 引用静态资源
 app.use(bodyParser.urlencoded({extended: false})); // post请求的body解析器（https://github.com/expressjs/body-parser）
 app.use(bodyParser.json());
 
