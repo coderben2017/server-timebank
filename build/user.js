@@ -21,11 +21,11 @@ var User = /** @class */ (function () {
     return User;
 }());
 exports.User = User;
-function getUser() {
+function getUsers() {
     var users = [];
     connection.query('select * from user', function (err, results) {
         if (err) {
-            throw err;
+            console.log(err.message);
         }
         else {
             for (var i = 0; i < results.length; ++i) {
@@ -34,6 +34,20 @@ function getUser() {
         }
     });
     return users;
+}
+exports.getUsers = getUsers;
+function getUser(id) {
+    var users = [];
+    connection.query('select * from user where id = 2', function (err, results) {
+        if (err) {
+            console.log(err.message);
+        }
+        else {
+            users.push(new User(results[0].id, results[0].name, results[0].true_name, results[0].credit_value, results[0].domicile, results[0].phone_number, results[0].id_card));
+        }
+    });
+    console.log(users[0]);
+    return users[0];
 }
 exports.getUser = getUser;
 //# sourceMappingURL=user.js.map

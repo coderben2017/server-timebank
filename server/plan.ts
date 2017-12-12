@@ -10,7 +10,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-
+// Plan数据结构
 export class Plan {
   constructor(
     public id: number,
@@ -22,12 +22,13 @@ export class Plan {
   ) {}
 }
 
+// 从数据库获取全部Plan
 export function getPlans(): Plan[] {
   let plans: Plan[] = [];
 
   connection.query('select * from plan', (err, results) => {
     if (err) {
-      throw err;
+      console.log(err.message);
     } else {
       for (let i = 0; i < results.length; ++i) {
         plans.push(
@@ -43,4 +44,34 @@ export function getPlans(): Plan[] {
   });
 
   return plans;
+}
+
+// 向数据库添加Plan
+export function addPlan(newPlan: Plan, timeStamp: number): boolean {
+  let res: boolean[] = [];
+
+  const sql = 'insert into plan (name, timestamp, place, salary, detail) values (?, ?, ?, ?, ?)';
+  const sqlParams = [newPlan.name, timeStamp, newPlan.place, newPlan.salary, newPlan.detail];
+  connection.query(sql,sqlParams, (err, results) => {
+    if (err) {
+      console.log(err.message);
+    } else {
+      res.push(true);
+      console.log(results);
+    }
+  });
+
+  return res[0];
+}
+
+// 将前端传来的文本解析为Plan对象
+export function analyzePlanText(text: string): Plan {
+  const paramArr = text.split(' ');
+  return new Plan(null, //id（传空，由数据库控制）
+                      paramArr[0], // name
+                      0, // timestamp（不使用）
+                      paramArr[1], // place
+                      parseInt(paramArr[2].replace(/^0-9/ig, '')), // salary
+                      paramArr[3] // detail
+  );
 }

@@ -11,7 +11,7 @@ var user_1 = require("./user");
  * 数据池
  */
 var plans = plan_1.getPlans();
-var users = user_1.getUser();
+var users = user_1.getUsers();
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -31,13 +31,18 @@ app.use(bodyParser.json());
 // login API
 app.post('/api/login', function (req, res) {
     connection.query('select * from account', function (err, results) {
-        for (var i = 0; i < results.length; ++i) {
-            if (results[i].usr == req.body['username'] && results[i].psw == req.body['password']) {
-                res.send(true);
-                return;
-            }
+        if (err) {
+            console.log(err.message);
         }
-        res.send(false);
+        else {
+            for (var i = 0; i < results.length; ++i) {
+                if (results[i].usr == req.body['username'] && results[i].psw == req.body['password']) {
+                    res.send(true);
+                    return;
+                }
+            }
+            res.send(false);
+        }
     });
 });
 // plan API
@@ -47,9 +52,17 @@ app
 })
     .get('/api/plan/:id', function (req, res) {
     res.json(plans.find(function (plan) { return plan.id == req.params.id; }));
+})
+    .post('/api/plan/add', function (req, res) {
+    var text = req.body['text'];
+    var timeStamp = req.body['timeStamp'];
+    var newPlan = plan_1.analyzePlanText(text);
+    var result = plan_1.addPlan(newPlan, timeStamp);
+    res.send(result);
 });
 // user API
 app.get('/api/user/:id', function (req, res) {
+    // res.json(getUser(req.params.id));
     res.json(users.find(function (user) { return user.id == req.params.id; }));
 });
 // 启动项

@@ -4,8 +4,8 @@ import * as bodyParser from 'body-parser';
 import * as connectHistoryApiFallback from 'connect-history-api-fallback';
 import * as mysql from 'mysql';
 
-import { Plan, getPlans } from "./plan";
-import { User, getUser } from "./user";
+import { Plan, getPlans, addPlan, analyzePlanText } from "./plan";
+import { User, getUsers, getUser } from "./user";
 
 
 
@@ -14,7 +14,7 @@ import { User, getUser } from "./user";
  */
 
 const plans: Plan[] = getPlans();
-const users: User[] = getUser();
+const users: User[] = getUsers();
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -42,13 +42,17 @@ app.use(bodyParser.json());
 // login API
 app.post('/api/login', (req, res) => {
   connection.query('select * from account', (err, results) => {
-    for(let i = 0; i < results.length; ++i) {
-      if (results[i].usr == req.body['username'] && results[i].psw == req.body['password']) {
-        res.send(true);
-        return;
+    if (err) {
+      console.log(err.message);
+    } else {
+      for(let i = 0; i < results.length; ++i) {
+        if (results[i].usr == req.body['username'] && results[i].psw == req.body['password']) {
+          res.send(true);
+          return;
+        }
       }
+      res.send(false);
     }
-    res.send(false);
   });
 });
 
@@ -59,10 +63,18 @@ app
   })
   .get('/api/plan/:id', (req, res) => {
     res.json(plans.find(plan => plan.id == req.params.id));
+  })
+  .post('/api/plan/add', (req, res) => {
+    const text: string = req.body['text'];
+    const timeStamp: number = req.body['timeStamp'];
+    const newPlan: Plan = analyzePlanText(text);
+    const result: boolean = addPlan(newPlan, timeStamp);
+    res.send(result);
   });
 
 // user API
 app.get('/api/user/:id', (req, res) => {
+  // res.json(getUser(req.params.id));
   res.json(users.find(user => user.id == req.params.id));
 });
 
