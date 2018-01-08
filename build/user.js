@@ -50,4 +50,4 @@ function getUser(id) {
     return users[0];
 }
 exports.getUser = getUser;
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=User.js.map

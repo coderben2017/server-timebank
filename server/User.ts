@@ -32,13 +32,15 @@ export function getUsers(): User[] {
     } else {
       for (let i = 0; i < results.length; ++i) {
         users.push(
-          new User(results[i].id,
+          new User(
+            results[i].id,
             results[i].name,
             results[i].true_name,
             results[i].credit_value,
             results[i].domicile,
             results[i].phone_number,
-            results[i].id_card)
+            results[i].id_card
+          )
         );
       }
     }
