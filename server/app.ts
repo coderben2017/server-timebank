@@ -4,10 +4,12 @@ import * as bodyParser from 'body-parser';
 import * as connectHistoryApiFallback from 'connect-history-api-fallback';
 import * as mysql from 'mysql';
 
-import { Plan, getPlans, addPlan, analyzePlanText } from "./plan";
-import { User, getUsers, getUser } from "./user";
-
-
+import { Plan, getPlans, addPlan, analyzePlanText } from './Plan';
+import { User, getUsers, getUser } from './User';
+import { Message, getMessages } from './Message';
+import { Task, getTasks } from './Task';
+import { UserInfo, getUserInfos} from './UserInfo';
+import { Activity, getActivities } from "./Activity";
 
 /**
  * 数据池
@@ -15,6 +17,10 @@ import { User, getUsers, getUser } from "./user";
 
 const plans: Plan[] = getPlans();
 const users: User[] = getUsers();
+const messages: Message[] = getMessages();
+const tasks: Task[] = getTasks();
+const userInfos: UserInfo[] = getUserInfos();
+const activities: Activity[] = getActivities();
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -47,36 +53,76 @@ app.post('/api/login', (req, res) => {
     } else {
       for(let i = 0; i < results.length; ++i) {
         if (results[i].usr == req.body['username'] && results[i].psw == req.body['password']) {
-          res.send(true);
+          res.send({status: true});
           return;
         }
       }
-      res.send(false);
+      res.send({status: false});
     }
   });
 });
 
 // plan API
-app
-  .get('/api/plans', (req, res) => {
-    res.json(plans);
-  })
-  .get('/api/plan/:id', (req, res) => {
-    res.json(plans.find(plan => plan.id == req.params.id));
-  })
-  .post('/api/plan/add', (req, res) => {
-    const text: string = req.body['text'];
-    const timeStamp: number = req.body['timeStamp'];
-    const newPlan: Plan = analyzePlanText(text);
+app.get('/api/plans', (req, res) => {
+  res.json(plans);
+});
+app.get('/api/plan/:id', (req, res) => {
+  res.json(plans.find(plan => plan.id == req.params.id));
+});
+app.post('/api/plan/add', (req, res) => {
+  const text: string = req.body['text'];
+  const timeStamp: number = req.body['timeStamp'];
+  const newPlan: any = analyzePlanText(text);
+  if (typeof newPlan === 'number') {
+    res.send({
+      status: false,
+      message: newPlan
+    });
+  } else {
     const result: boolean = addPlan(newPlan, timeStamp);
-    res.send(result);
-  });
+    if (result) {// 解析成功
+      res.send({
+        status: true,
+        message: 0
+      });
+    } else { // 解析失败
+      res.send({
+        status: false,
+        message: 3
+      });
+    }
+  }
+});
 
 // user API
 app.get('/api/user/:id', (req, res) => {
   // res.json(getUser(req.params.id));
   res.json(users.find(user => user.id == req.params.id));
 });
+
+// message API
+app.get('/api/messages', (req, res) => {
+  res.json(messages.filter(message => message.userId == req.query.userId));
+});
+
+// task API
+app.get('/api/tasks', (req, res) => {
+  res.json(tasks.filter(task => task.userId == req.query.userId));
+});
+app.get('/api/tasks/notices', (req, res) => {
+  res.json(tasks.filter(task => task.userId == req.query.userId && new Date().getTime() >= task.timeStamp - 86400000));
+});
+
+// userInfo API
+app.get('/api/userInfo', (req, res) => {
+  res.json(userInfos.find(userInfo => userInfo.id == req.query.userId));
+});
+
+// activity API
+app.get('/api/activities', (req, res) => {
+  res.json(activities);
+});
+
 
 // 启动项
 const server = app.listen(3000, 'localhost', () => {

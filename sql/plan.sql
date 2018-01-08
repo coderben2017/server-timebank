@@ -5,6 +5,6 @@ create table if not exists `plan` (
 	`timestamp` bigint not null,
 	`place` varchar(100) not null,
 	`salary` int not null,
-	`detail` text,
+	`phonenumber` int not null,
 	primary key (`id`)
 )engine=innodb default charset=utf8;
