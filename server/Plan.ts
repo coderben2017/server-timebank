@@ -24,7 +24,7 @@ export class Plan {
 
 // 从数据库获取全部Plan
 export function getPlans(): Plan[] {
-  var plans: Plan[] = [];
+  let plans: Plan[] = [];
 
   connection.query('select * from plan', (err, results) => {
     if (err) {
@@ -50,7 +50,7 @@ export function getPlans(): Plan[] {
 
 // 向数据库添加Plan
 export function addPlan(newPlan: Plan, timeStamp: number): boolean {
-  var res: boolean = true;
+  let res: boolean = true;
 
   const sql = 'insert into plan (name, timestamp, place, salary, phone_number) values (?, ?, ?, ?, ?)';
   const sqlParams = [newPlan.name, timeStamp, newPlan.place, newPlan.salary, newPlan.phoneNumber];
