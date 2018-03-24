@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as connectHistoryApiFallback from 'connect-history-api-fallback';
-import * as mysql from 'mysql';
 
 import { Plan, getPlans, addPlan, analyzePlanText } from './Plan';
 import { User, getUsers, getUser } from './User';
@@ -11,26 +10,18 @@ import { Task, getTasks } from './Task';
 import { UserInfo, getUserInfos} from './UserInfo';
 import { Activity, getActivities } from "./Activity";
 
+import { connection } from "./db/conn";
+
+
 /**
  * 数据池
  */
-
 const plans: Plan[] = getPlans();
 const users: User[] = getUsers();
 const messages: Message[] = getMessages();
 const tasks: Task[] = getTasks();
 const userInfos: UserInfo[] = getUserInfos();
 const activities: Activity[] = getActivities();
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  database: 'timebank'
-});
-
-connection.connect();
-
 
 
 /**
@@ -126,5 +117,5 @@ app.get('/api/activities', (req, res) => {
 
 // 启动项
 const server = app.listen(3000, 'localhost', () => {
-  console.log('Node Server Start on localhost:3000...');
+  console.log('Server Start on localhost:3000...');
 });

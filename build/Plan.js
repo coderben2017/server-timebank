@@ -1,15 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'timebank'
-});
-connection.connect();
+var conn_1 = require("./db/conn");
 // Plan数据结构
-var Plan = /** @class */ (function () {
+var Plan = (function () {
     function Plan(id, name, timeStamp, place, salary, phoneNumber) {
         this.id = id;
         this.name = name;
@@ -24,7 +17,7 @@ exports.Plan = Plan;
 // 从数据库获取全部Plan
 function getPlans() {
     var plans = [];
-    connection.query('select * from plan', function (err, results) {
+    conn_1.connection.query('select * from plan', function (err, results) {
         if (err) {
             console.log(err.message);
         }
@@ -42,7 +35,7 @@ function addPlan(newPlan, timeStamp) {
     var res = true;
     var sql = 'insert into plan (name, timestamp, place, salary, phone_number) values (?, ?, ?, ?, ?)';
     var sqlParams = [newPlan.name, timeStamp, newPlan.place, newPlan.salary, newPlan.phoneNumber];
-    connection.query(sql, sqlParams, function (err, results) {
+    conn_1.connection.query(sql, sqlParams, function (err, results) {
         if (err) {
             console.log(err.message);
             res = false;

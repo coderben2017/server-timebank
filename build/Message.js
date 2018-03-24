@@ -1,15 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'timebank'
-});
-connection.connect();
+var conn_1 = require("./db/conn");
 // Message数据结构
-var Message = /** @class */ (function () {
+var Message = (function () {
     function Message(id, source, timeStamp, content, userId) {
         this.id = id;
         this.source = source;
@@ -23,7 +16,7 @@ exports.Message = Message;
 // 从数据库获取全部Message
 function getMessages() {
     var messages = [];
-    connection.query('select * from message', function (err, results) {
+    conn_1.connection.query('select * from message', function (err, results) {
         if (err) {
             console.log(err.message);
         }

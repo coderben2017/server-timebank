@@ -4,13 +4,13 @@ var express = require("express");
 var path = require("path");
 var bodyParser = require("body-parser");
 var connectHistoryApiFallback = require("connect-history-api-fallback");
-var mysql = require("mysql");
 var Plan_1 = require("./Plan");
 var User_1 = require("./User");
 var Message_1 = require("./Message");
 var Task_1 = require("./Task");
 var UserInfo_1 = require("./UserInfo");
 var Activity_1 = require("./Activity");
+var conn_1 = require("./db/conn");
 /**
  * 数据池
  */
@@ -20,13 +20,6 @@ var messages = Message_1.getMessages();
 var tasks = Task_1.getTasks();
 var userInfos = UserInfo_1.getUserInfos();
 var activities = Activity_1.getActivities();
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'timebank'
-});
-connection.connect();
 /**
  * 服务器
  */
@@ -38,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false })); // post请求的body解析�
 app.use(bodyParser.json());
 // login API
 app.post('/api/login', function (req, res) {
-    connection.query('select * from account', function (err, results) {
+    conn_1.connection.query('select * from account', function (err, results) {
         if (err) {
             console.log(err.message);
         }
@@ -112,6 +105,6 @@ app.get('/api/activities', function (req, res) {
 });
 // 启动项
 var server = app.listen(3000, 'localhost', function () {
-    console.log('Node Server Start on localhost:3000...');
+    console.log('Server Start on localhost:3000...');
 });
 //# sourceMappingURL=app.js.map

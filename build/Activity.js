@@ -1,14 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql = require("mysql");
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '123456',
-    database: 'timebank'
-});
-connection.connect();
-var Activity = /** @class */ (function () {
+var conn_1 = require("./db/conn");
+var Activity = (function () {
     function Activity(id, name, content, timeStamp) {
         this.id = id;
         this.name = name;
@@ -20,7 +13,7 @@ var Activity = /** @class */ (function () {
 exports.Activity = Activity;
 function getActivities() {
     var activities = [];
-    connection.query('select * from activity', function (err, results) {
+    conn_1.connection.query('select * from activity', function (err, results) {
         if (err) {
             console.log(err.message);
         }

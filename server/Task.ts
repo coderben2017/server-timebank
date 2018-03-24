@@ -1,14 +1,4 @@
-import * as mysql from 'mysql';
-
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  database: 'timebank'
-});
-
-connection.connect();
+import { connection } from "./db/conn";
 
 // Task数据结构
 export class Task {
