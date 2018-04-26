@@ -41,7 +41,7 @@ export function getUsers(): User[] {
 export function getUser(id: number): User {
   let users: User[] = [];
 
-  connection.query('select * from user where id = 2', (err, results) => {
+  connection.query('select * from user where id = 1', (err, results) => {
     if (err) {
       console.log(err.message);
     } else {

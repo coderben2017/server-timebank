@@ -1,24 +1,22 @@
 /*
- Navicat Premium Data Transfer
+Navicat MySQL Data Transfer
 
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 50720
- Source Host           : localhost
- Source Database       : timebank
+Source Server         : localhost
+Source Server Version : 50719
+Source Host           : localhost:3306
+Source Database       : timebank
 
- Target Server Type    : MySQL
- Target Server Version : 50720
- File Encoding         : utf-8
+Target Server Type    : MYSQL
+Target Server Version : 50719
+File Encoding         : 65001
 
- Date: 01/09/2018 15:09:38 PM
+Date: 2018-04-22 10:55:27
 */
 
-SET NAMES utf8;
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
---  Table structure for `account`
+-- Table structure for `account`
 -- ----------------------------
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
@@ -26,17 +24,21 @@ CREATE TABLE `account` (
   `usr` varchar(20) DEFAULT NULL,
   `psw` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `account`
+-- Records of account
 -- ----------------------------
-BEGIN;
 INSERT INTO `account` VALUES ('1', 'admin', 'admin');
-COMMIT;
+INSERT INTO `account` VALUES ('2', 'aaaaaa', 'aaaaaa');
+INSERT INTO `account` VALUES ('3', 'bbbbbb', 'bbbbbb');
+INSERT INTO `account` VALUES ('4', 'cccccc', 'cccccc');
+INSERT INTO `account` VALUES ('5', 'jjjjjj', 'jjjjjj');
+INSERT INTO `account` VALUES ('6', 'ssssss', 'ssssss');
+INSERT INTO `account` VALUES ('7', 'tttttt', 'tttttt');
 
 -- ----------------------------
---  Table structure for `activity`
+-- Table structure for `activity`
 -- ----------------------------
 DROP TABLE IF EXISTS `activity`;
 CREATE TABLE `activity` (
@@ -48,14 +50,30 @@ CREATE TABLE `activity` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `activity`
+-- Records of activity
 -- ----------------------------
-BEGIN;
 INSERT INTO `activity` VALUES ('1', '清明郊游骑行活动', '时间：4月5号，地点：烟台市牟平区昆嵛山', '1522893600000');
-COMMIT;
 
 -- ----------------------------
---  Table structure for `message`
+-- Table structure for `complaints`
+-- ----------------------------
+DROP TABLE IF EXISTS `complaints`;
+CREATE TABLE `complaints` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `phone_number` bigint(11) DEFAULT NULL,
+  `content` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of complaints
+-- ----------------------------
+INSERT INTO `complaints` VALUES ('3', '17862707398', '21');
+INSERT INTO `complaints` VALUES ('4', null, '112');
+INSERT INTO `complaints` VALUES ('5', null, '222');
+
+-- ----------------------------
+-- Table structure for `message`
 -- ----------------------------
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
@@ -68,14 +86,12 @@ CREATE TABLE `message` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `message`
+-- Records of message
 -- ----------------------------
-BEGIN;
 INSERT INTO `message` VALUES ('1', '技术团队', '1514946901318', '令人期待的1.0版本将在今晚推出!', '1');
-COMMIT;
 
 -- ----------------------------
---  Table structure for `plan`
+-- Table structure for `plan`
 -- ----------------------------
 DROP TABLE IF EXISTS `plan`;
 CREATE TABLE `plan` (
@@ -85,18 +101,25 @@ CREATE TABLE `plan` (
   `place` varchar(100) NOT NULL,
   `salary` int(11) NOT NULL,
   `phone_number` bigint(11) NOT NULL,
+  `receive_person_id` int(10) DEFAULT NULL,
+  `is_received` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `plan`
+-- Records of plan
 -- ----------------------------
-BEGIN;
-INSERT INTO `plan` VALUES ('1', '帮忙搬家', '1516242000000', '西门外悦海小区', '6', '18736448888'), ('4', '求帮忙代缴水电表', '1515722400000', '科学院小区', '2', '1834759324'), ('5', '求帮接孩子', '1514972640000', '鲸园小学', '4', '18734838484'), ('6', '5号下午求帮忙接孩子', '1516092600000', '航天幼儿园', '4', '18738472893');
-COMMIT;
+INSERT INTO `plan` VALUES ('29', '取快递', '1524107460000', '学15', '2', '17826384738', '3', '1');
+INSERT INTO `plan` VALUES ('30', '发快递', '1524201180000', '学14', '3', '17839493940', '4', '1');
+INSERT INTO `plan` VALUES ('31', '发快递', '1524291240000', '学14', '4', '17847384912', '5', '1');
+INSERT INTO `plan` VALUES ('32', '打热水', '1524381300000', '学15', '5', '18473843838', '6', '1');
+INSERT INTO `plan` VALUES ('33', '带饭', '1524471360000', '学14', '6', '18344328384', '6', '1');
+INSERT INTO `plan` VALUES ('34', '取快递', '1524561420000', '学15', '7', '18344328384', '7', '1');
+INSERT INTO `plan` VALUES ('35', '发快递', '1524651480000', '学15', '8', '18349538471', '1', '1');
+INSERT INTO `plan` VALUES ('36', '带饭', '1524330060000', '学15', '11', '17862701111', null, '0');
 
 -- ----------------------------
---  Table structure for `task`
+-- Table structure for `task`
 -- ----------------------------
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task` (
@@ -109,14 +132,12 @@ CREATE TABLE `task` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `task`
+-- Records of task
 -- ----------------------------
-BEGIN;
 INSERT INTO `task` VALUES ('1', '5号6号下午求帮忙接孩子', '50', '1', '1514946901318');
-COMMIT;
 
 -- ----------------------------
---  Table structure for `user`
+-- Table structure for `user`
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -126,19 +147,23 @@ CREATE TABLE `user` (
   `credit_value` int(11) NOT NULL,
   `domicile` varchar(100) NOT NULL,
   `phone_number` bigint(11) NOT NULL,
-  `id_card` binary(50) NOT NULL,
+  `id_card` bigint(18) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `user`
+-- Records of user
 -- ----------------------------
-BEGIN;
-INSERT INTO `user` VALUES ('1', 'coderben', '金奔', '193', '山大学15宿舍楼', '17896739782', 0x6e756c6c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000), ('2', '小明', '王小明', '64', '高区金沙滩小区', '13849234823', 0x6e756c6c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000);
-COMMIT;
+INSERT INTO `user` VALUES ('1', 'Ben', '金奔', '23', '15号楼123', '17862701111', '370283199511223344');
+INSERT INTO `user` VALUES ('2', 'Alien', '张三', '25', '14号楼321', '17826384738', '354034199403131412');
+INSERT INTO `user` VALUES ('3', 'Bob', '李四', '24', '15号楼123', '17839493940', '130482199605139418');
+INSERT INTO `user` VALUES ('4', 'Christin', '王五', '24', '14号楼321', '17847384912', '381923199611234563');
+INSERT INTO `user` VALUES ('5', 'Jack', '陈六', '24', '15号楼123', '18473843838', '328493199904374903');
+INSERT INTO `user` VALUES ('6', 'Selina', '钱七', '24', '14号楼321', '18344328384', '138294199603234581');
+INSERT INTO `user` VALUES ('7', 'Tom', '周八', '24', '15号楼123', '18349538471', '370310199505121314');
 
 -- ----------------------------
---  Table structure for `userinfo`
+-- Table structure for `userinfo`
 -- ----------------------------
 DROP TABLE IF EXISTS `userinfo`;
 CREATE TABLE `userinfo` (
@@ -151,10 +176,12 @@ CREATE TABLE `userinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Records of `userinfo`
+-- Records of userinfo
 -- ----------------------------
-BEGIN;
 INSERT INTO `userinfo` VALUES ('1', '金奔', '前端工程师', '1511136000000', '1');
-COMMIT;
-
-SET FOREIGN_KEY_CHECKS = 1;
+INSERT INTO `userinfo` VALUES ('2', 'Alien', '学生', '1511136000000', '2');
+INSERT INTO `userinfo` VALUES ('3', 'Bob', '学生', '1511136000000', '3');
+INSERT INTO `userinfo` VALUES ('4', 'Christin', '学生', '1511136000000', '4');
+INSERT INTO `userinfo` VALUES ('5', 'Jack', '学生', '1511136000000', '5');
+INSERT INTO `userinfo` VALUES ('6', 'Selina', '学生', '1511136000000', '6');
+INSERT INTO `userinfo` VALUES ('7', 'Tom', '学生', '1511136000000', '7');

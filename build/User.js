@@ -31,7 +31,7 @@ function getUsers() {
 exports.getUsers = getUsers;
 function getUser(id) {
     var users = [];
-    conn_1.connection.query('select * from user where id = 2', function (err, results) {
+    conn_1.connection.query('select * from user where id = 1', function (err, results) {
         if (err) {
             console.log(err.message);
         }

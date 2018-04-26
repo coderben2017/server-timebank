@@ -8,7 +8,9 @@ export class Plan {
     public timeStamp: number,
     public place: string,
     public salary: number,
-    public phoneNumber: number
+    public phoneNumber: number,
+    public isReceived: number,
+    public receivePersonId?: number
   ) {}
 }
 
@@ -28,7 +30,9 @@ export function getPlans(): Plan[] {
             results[i].timestamp,
             results[i].place,
             results[i].salary,
-            results[i].phone_number
+            results[i].phone_number,
+            results[i].is_received,
+            results[i].receive_person_id
           )
         );
       }
@@ -36,42 +40,4 @@ export function getPlans(): Plan[] {
   });
 
   return plans;
-}
-
-// 向数据库添加Plan
-export function addPlan(newPlan: Plan, timeStamp: number): boolean {
-  let res: boolean = true;
-
-  const sql = 'insert into plan (name, timestamp, place, salary, phone_number) values (?, ?, ?, ?, ?)';
-  const sqlParams = [newPlan.name, timeStamp, newPlan.place, newPlan.salary, newPlan.phoneNumber];
-  connection.query(sql,sqlParams, (err, results) => {
-    if (err) {
-      console.log(err.message);
-      res = false;
-    } else {
-      console.log(results);
-    }
-  });
-
-  return res;
-}
-
-// 将前端传来的文本解析为Plan对象
-export function analyzePlanText(text: string): any {
-  const paramArr = text.split(' ');
-  // 酬劳字段检查
-  if (!parseInt(paramArr[2].replace(/^0-9/ig, ''))) {
-    return 1;
-  }
-  // 手机号字段检查
-  if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(paramArr[3]))) {
-    return 2
-  }
-  return new Plan(null, //id（传空，由数据库控制）
-                      paramArr[0], // name
-                      0, // timestamp（不使用）
-                      paramArr[1], // place
-                      parseInt(paramArr[2].replace(/^0-9/ig, '')), // salary
-                      Number(paramArr[3]) // phonenumber
-  );
 }
