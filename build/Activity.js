@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var conn_1 = require("./db/conn");
-var Activity = (function () {
+var Activity = /** @class */ (function () {
     function Activity(id, name, content, timeStamp) {
         this.id = id;
         this.name = name;

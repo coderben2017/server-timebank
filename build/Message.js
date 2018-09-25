@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var conn_1 = require("./db/conn");
 // Message数据结构
-var Message = (function () {
+var Message = /** @class */ (function () {
     function Message(id, source, timeStamp, content, userId) {
         this.id = id;
         this.source = source;

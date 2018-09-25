@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var conn_1 = require("./db/conn");
 // Task数据结构
-var Task = (function () {
+var Task = /** @class */ (function () {
     function Task(id, content, timeStamp, completeDegree, userId) {
         this.id = id;
         this.content = content;

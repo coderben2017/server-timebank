@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var conn_1 = require("./db/conn");
 // Plan数据结构
-var Plan = (function () {
+var Plan = /** @class */ (function () {
     function Plan(id, name, timeStamp, place, salary, phoneNumber, isReceived, receivePersonId) {
         this.id = id;
         this.name = name;
